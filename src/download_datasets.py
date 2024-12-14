@@ -7,7 +7,7 @@ import wget
 
 @hydra.main(config_path="configs", config_name="eval_config.yml")
 def my_app(cfg: DictConfig) -> None:
-    pytorch_data_dir = cfg.pytorch_data_dir
+    pytorch_data_dir = '/home/macio/STEGO/src/data/'
     dataset_names = [
         "potsdam",
         "cityscapes",

@@ -3,3 +3,10 @@ data/*
 src/.env
 results/predictions/*
 src/iarpa
+checkpoints/*
+src/data/*
+*.log
+*.so.8
+logs/*
+saved_models/*
+*/__pycache__/*

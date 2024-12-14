@@ -46,6 +46,11 @@ def get_class_labels(dataset_name):
             'roads and cars',
             'buildings and clutter',
             'trees and vegetation']
+    elif dataset_name == "directory":
+        return [
+            'Neuro D1 Reporter',
+            'Yap 1 Reporter',
+            'Background']
     else:
         raise ValueError("Unknown Dataset {}".format(dataset_name))
 
@@ -473,7 +478,7 @@ def my_app(cfg: DictConfig) -> None:
             gpu_args.pop("val_check_interval")
 
     else:
-        gpu_args = dict(gpus=-1, accelerator='ddp', val_check_interval=cfg.val_freq)
+        gpu_args = dict(gpus=-1, accelerator='cuda', val_check_interval=cfg.val_freq)
         # gpu_args = dict(gpus=1, accelerator='ddp', val_check_interval=cfg.val_freq)
 
         if gpu_args["val_check_interval"] > len(train_loader) // 4:
@@ -482,14 +487,15 @@ def my_app(cfg: DictConfig) -> None:
     trainer = Trainer(
         log_every_n_steps=cfg.scalar_log_freq,
         logger=tb_logger,
-        max_steps=cfg.max_steps,
+        # max_steps=cfg.max_steps,
+        max_epochs=5,
         callbacks=[
             ModelCheckpoint(
                 dirpath=join(checkpoint_dir, name),
-                every_n_train_steps=400,
-                save_top_k=2,
+                save_top_k=-1,
                 monitor="test/cluster/mIoU",
                 mode="max",
+                save_last=True
             )
         ],
         **gpu_args

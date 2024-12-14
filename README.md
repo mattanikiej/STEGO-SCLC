@@ -42,7 +42,7 @@ git clone https://github.com/mhamilton723/STEGO.git
 cd STEGO
 ```
 
-### Install Conda Environment
+### Original: Install Conda Environment (works on QUEST with original env)
 Please visit the [Anaconda install page](https://docs.anaconda.com/anaconda/install/index.html) if you do not already have conda installed
 
 ```shell script
@@ -50,7 +50,16 @@ conda env create -f environment.yml
 conda activate stego
 ```
 
+### Updated Env: Install Mamba Environment
+Please visit the [Mamba install page](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html) if you do not already have mamba installed. I had to use mamba to get the environment working beacause of a few build packages. It is a reimplementation of conda in C++, with many improvements and quality of life features. The original conda environment works on Quest though, and this was needed to work on an updated version of ubuntu (23.10). Personally, I prefer mamba over conda in every situation.
+
+```shell script
+mamba env create -f environment.yml
+mamba activate stego
+```
+
 ### Download Pre-Trained Models
+**Not needed for this project.**
 
 ```shell script
 cd src
@@ -58,9 +67,9 @@ python download_models.py
 ```
 
 ### Download Datasets
+**Not needed for this project.**
 
-First, change the `pytorch_data_dir` variable to your 
-systems pytorch data directory where datasets are stored. 
+First, change the the `pytorch_data_dir` variable in `download_dataseets.py` to your directory where datasets are stored. 
 
 ```shell script
 python download_datasets.py
@@ -85,9 +94,11 @@ python eval_segmentation.py
 ```
 One can change the evaluation parameters and model by editing [`STEGO/src/configs/eval_config.yml`](src/configs/eval_config.yml)
 
+To test custom images, change the values in line 115. It can be as many or as little as wanted.
+
 ## Training
 
-To train STEGO from scratch, please first generate the KNN indices for the datasets of interest. Note that this requires generating a cropped dataset first, and you may need to modify `crop datasets.py` to specify the dataset that you are cropping:
+To train STEGO from scratch, please first generate the KNN indices for the datasets of interest. Note that this requires generating a cropped dataset first, and you may need to modify `crop_datasets.py` to specify the dataset that you are cropping:
 
 ```shell script
 python crop_datasets.py
@@ -106,7 +117,11 @@ To monitor training with tensorboard run the following from `STEGO` directory:
 tensorboard --logdir logs
 ```
 
+**Note:** I'm not sure why the original authors had this, but tensorboard is not compatible with the version of tensorflow they require.
+
 ### Bringing your own data
+
+**Note:** The image stacks given are `.tiff` files which are not supported by the model. I had to convert the stack to `.png` images for the model to work. It needs either `.jpg` or `.png`.
 
 To train STEGO on your own dataset please create a directory in your pytorch data root with the following structure. Note, if you do not have labels, omit the `labels` directory from the structure:
 
@@ -138,6 +153,8 @@ dir_dataset_n_classes: 5 # This is the number of object types to find
 
 If you want to train with cropping to increase spatial resolution run our [cropping utility](src/crop_datasets.py).
 
+**For SCLC:** Use the `crop_sclc.py` script to crop the images.
+
 Finally, uncomment the custom dataset code and run `python precompute_knns.py`
  from `STEGO\src` to generate the prerequisite KNN information for the custom dataset.
  
@@ -145,6 +162,8 @@ You can now train on your custom dataset using:
 ```shell script
 python train_segmentation.py
 ```
+
+**Note:** Some training parameters need to be changed in `train_segmentation.py` in line 487.Namely the `epochs` and `save_top_k` arguments. `save_top_k=-1` saves every single checkpoint. This can be removed if you just want the last chack point, as long as the `save_last` argument is `True`.
 
 ## Understanding STEGO
 

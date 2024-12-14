@@ -1,17 +1,25 @@
 output_root: '../'
-pytorch_data_dir: '/datadrive/pytorch-data/'
-experiment_name: "cocostuff"
+pytorch_data_dir: '/home/macio/STEGO/src/data/'
+experiment_name: "crop-64-no-labels-5-epoch-6-class-train-adherent"
 res: 320
-batch_size: 8
-num_workers: 24
-run_picie: True
+batch_size: 4
+num_workers: 12
+run_picie: False
 run_crf: True
 run_prediction: True
 dark_mode: True
 use_ddp: False
 
 model_paths:
-  - "../saved_models/cocostuff27_vit_base_5.ckpt"
+  - "/home/macio/STEGO/checkpoints/sclc/directory_crop-64-no-labels-5-epoch-6-class-train-adherent_date_Dec10_15-26-55/last.ckpt"
+  # - "/home/macio/STEGO/checkpoints/sclc/directory_crop-156-no-labels-10-epoch-6-class-train-adherent_date_Dec04_23-33-17/last.ckpt"
+  # - "/home/macio/STEGO/checkpoints/sclc/directory_crop-156-no-labels-10-epoch-6-class_date_Nov24_22-14-52/epoch=3-step=67044.ckpt"
+  # - "/home/macio/STEGO/checkpoints/sclc/directory_crop-64-no-labels-10-epoch-6-class_date_Nov15_08-38-51/last.ckpt"
+  # - "/home/macio/STEGO/checkpoints/sclc/directory_crop-64-no-labels-10-epoch_date_Nov14_15-12-57/last.ckpt"
+  # - "/home/macio/STEGO/checkpoints/sclc/directory_crop-64-no-labels-100epochs_date_Nov06_16-03-48/epoch=1-step=10662.ckpt"
+  # - "/home/macio/STEGO/checkpoints/crop-24-no-labels-100epochs-4class/directory_crop-24-no-labels-100epochs_date_Nov04_09-33-48/epoch=9-step=25920.ckpt"
+  # - "/home/macio/STEGO/checkpoints/crop-24-no-labels-100epochs/directory_crop-24-no-labels-100epochs_date_Oct30_17-18-59/epoch=9-step=25920.ckpt"
+  # - "/home/macio/STEGO/checkpoints/directory_five_crop_0.5/directory_crop-24-no-labels_date_Oct30_14-54-49/epoch=2-step=6000.ckpt"
   #- "../saved_models/cityscapes_vit_base_1.ckpt"
   #- "../saved_models/potsdam_test.ckpt"
 
